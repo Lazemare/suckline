@@ -2,13 +2,17 @@
 
 Suckline is a [powerline-shell](https://github.com/b-ryan/powerline-shell "powerline-shell") like prompt generator with very poor functions. Screenshot↓
 
-<img src="fig/screenshot.png" width="100%" height="100%" align=center />
+<p align="center">
+   <img src="fig/screenshot.png" width="75%" height="75%" />
+</p>
 
 ---
 
 # Why ?
 
-<img src="fig/suckline_go_brrrr.png" width="75%" height="75%" align=center />
+<p align="center">
+   <img src="fig/suckline_go_brrrr.png" width="75%" height="75%" />
+</p>
 
 Basically, I'm pretty happy with the original powerline-shell program, and have it installed on my daily drivers. In most case it works very well, only except when I use my laptop without AC power supply connected. At that time, powerline-shell becomes laggy, which typically takes about 0.13 - 0.14s to show up (I have purged the default ssh/hg/jobs segment). Thus I started to think about writing a prompt generator with an appearance similar to powerline-shell in some language instead of Python. Since I'm too dumb to use GitHub under command line (and literally do not have such requirements), I could just ignore the GitHub (as well svn/hg/fossil) support, which is the most time consuming part.
 
