@@ -3,7 +3,7 @@
 Suckline is a [powerline-shell](https://github.com/b-ryan/powerline-shell "powerline-shell") like prompt generator with very poor functions. Screenshot↓
 
 <p align="center">
-   <img src="fig/screenshot.png" width="75%" height="75%" />
+   <img src="fig/screenshot.png" width="100%" height="100%" />
 </p>
 
 ---
