@@ -39,6 +39,9 @@ static int strip_home(char *str)
 
 	/* determine if we are at home */
 	home = getenv("HOME");
+	if (home == NULL) {
+		return -1; /* homeless */
+	}
 	len_str = strlen(str);
 	len_home = strlen(home);
 	if (len_home == strlen(str)) {
@@ -136,7 +139,9 @@ void get_conda_path(char *buff)
 {
 	const char *conda_path;
 	conda_path = getenv("CONDA_DEFAULT_ENV");
-	strcat(buff," ");
-	strcat(buff,conda_path);
-	strcat(buff," ");
+	if (conda_path != NULL) {
+		strcat(buff," ");
+		strcat(buff,conda_path);
+		strcat(buff," ");
+	}
 }
