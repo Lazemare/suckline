@@ -15,7 +15,7 @@ void conv_conf(struct CONFIG config, struct PROMPT *prompt)
 		switch (config.segment_type[i]) {
 		case 1:
 			strcat(prompt->string[i]," ");
-			strcat(prompt->string[i],getlogin());
+			strcat(prompt->string[i],getlogin()?getlogin():"who?");
 			strcat(prompt->string[i]," ");
 			break;
 		case 2:
