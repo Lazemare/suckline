@@ -28,7 +28,7 @@ You could simply type `make` command in the `src` directory to compile suckline.
 
 ## Configure
 
-Suckline does not read a configure file during running, the configure file is the include file itself. You could change things in `config.h`, then recompile suckline to make it work.
+Suckline does not read a configure file during running, the configure file is the header file itself. You could change things in `config.h`, then recompile suckline to make it work.
 
 ## Shell support
 
