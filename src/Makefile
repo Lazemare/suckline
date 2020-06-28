@@ -10,7 +10,7 @@ INSPATH = /usr/bin
 INCS    =
 
 # Objects
-OBJS    = config.o git.o path.o segment.o suckline.o
+OBJS    = config.o git.o path.o segment.o suckline.o user.o
 
 # Executable
 EXE     = suckline
@@ -29,6 +29,8 @@ segment.o:
 	$(CC) $(INCS) $(CFLAGS) -c segment.c
 suckline.o:
 	$(CC) $(INCS) $(CFLAGS) -c suckline.c
+user.o:
+	$(CC) $(INCS) $(CFLAGS) -c user.c
 
 suckline: $(OBJS)
 	$(CC) -o $(EXE) $(OBJS) $(LDFLAGS)
