@@ -64,6 +64,8 @@ struct PROMPT {
 
 /* functions */
 
+void get_username(char *str);
+
 void my_getcwd(char *buff, int len, int mode);
 
 void conv_conf(struct CONFIG config, struct PROMPT *prompt);
