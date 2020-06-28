@@ -8,10 +8,10 @@ struct CONFIG config = {
 
 	.segment_type[0]     = USER,    /* Segment type:  */
 	.segment_type[1]     = CONDA,   /* USER, CONDA, PATH, */
-	.segment_type[2]     = PATH,    /* GIT,  SYMBO, ERROR */
+	.segment_type[2]     = PATH,    /* GIT,  SYMBO, ERRNO */
 	.segment_type[3]     = GIT,
 	.segment_type[4]     = SYMBO,
-	.segment_type[5]     = ERROR,
+	.segment_type[5]     = ERRNO,
 
 	.color_fg[0]         = BLK,     /* Colors: */
 	.color_fg[1]         = WHT,     /* BLK, RED, GRN, CYN, */
