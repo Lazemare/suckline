@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,15 +9,13 @@
 void conv_conf(struct CONFIG config, struct PROMPT *prompt)
 {
 	int i = 0;
-	int errno = 0;
+	int git_info = 0;
 
 	for (i = 0; i < prompt->segnum; i++) {
 		/* strings */
 		switch (config.segment_type[i]) {
 		case 1:
-			strcat(prompt->string[i]," ");
-			strcat(prompt->string[i],getlogin()?getlogin():"who?");
-			strcat(prompt->string[i]," ");
+			get_username(prompt->string[i]);
 			break;
 		case 2:
 			my_getcwd(prompt->string[i],MAXLPS,config.directory_mode);
@@ -38,8 +37,8 @@ void conv_conf(struct CONFIG config, struct PROMPT *prompt)
 			get_conda_path(prompt->string[i]);
 			break;
 		case 6:
-			errno = git(prompt->string[i]);
-			switch (errno) {
+			git_info = git(prompt->string[i]);
+			switch (git_info) {
 			case 1:
 				/* if not a repo, purge this segment */
 				memset(prompt->string[i], 0, MAXLPS);
