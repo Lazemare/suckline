@@ -7,7 +7,7 @@
 #define USER  1
 #define PATH  2
 #define SYMBO 3
-#define ERROR 4
+#define ERRNO 4
 #define CONDA 5
 #define GIT   6
 /* segment color */
