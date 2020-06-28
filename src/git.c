@@ -125,11 +125,11 @@ int git(char *str)
 		strcat(str," ");
 		strcat(str,"!GITDIR!");
 		strcat(str," ");
-		return 2; /* git dir */
+		return 2; /* Return 2 if git dir. */
 	}
 	if (get_git_info(&ahead, &behind)) {
 		strcat(str," ");
-		return 3; /* Return 2 if repo dirty. */
+		return 3; /* Return 3 if repo dirty. */
 	}
 	strcat(str," ");
 	if (ahead > 0) {
