@@ -41,7 +41,6 @@ void conv_conf(struct CONFIG config, struct PROMPT *prompt)
 			switch (git_info) {
 			case 1:
 				/* if not a repo, purge this segment */
-				memset(prompt->string[i], 0, MAXLPS);
 				break;
 			case 2:
 				/* git dir, give a warning */
