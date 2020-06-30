@@ -6,6 +6,12 @@ Suckline is a [powerline-shell](https://github.com/b-ryan/powerline-shell "power
    <img src="fig/screenshot.png" width="100%" height="100%" />
 </p>
 
+<center>
+
+(font: [mononoki](https://madmalik.github.io/mononoki/ "mononoki"))
+
+</center>
+
 ---
 
 # Why ?
