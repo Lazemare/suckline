@@ -118,6 +118,7 @@ int git(char *str)
 	char tmp[12];
 	strcat(str," ");
 	if (get_git_branch(str)) {
+		str[0] = '\0';
 		return 1; /* Return 1 if not a repo. */
 	}
 	if (is_git_dir()) {
