@@ -4,13 +4,8 @@ Suckline is a [powerline-shell](https://github.com/b-ryan/powerline-shell "power
 
 <p align="center">
    <img src="fig/screenshot.png" width="100%" height="100%" />
+   (font: <a href="https://madmalik.github.io/mononoki/">mononoki</a>)
 </p>
-
-<center>
-
-(font: [mononoki](https://madmalik.github.io/mononoki/ "mononoki"))
-
-</center>
 
 ---
 
