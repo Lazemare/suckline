@@ -77,10 +77,10 @@ static int get_git_info(int *ahead, int *behind)
 	/* If get_info gives more than one line,
 	 * we know that repo is dirty. That's enough. */
 	errchar = fgets(buff, MAXLPS, shell);
+	pclose(shell); /* We do not need exit code this time. */
 	if (errchar) {
 		return 1;
 	}
-	pclose(shell);
 	/* parse */
 	if ((info_rst = strstr(buff,"behind"))) {
 		/* info_rst looks like "behind xxx]"
@@ -137,7 +137,7 @@ int git(char *str)
 		sprintf(tmp,"%d",ahead);
 		strcat(str,tmp);
 		strcat(str,"↑ ");
-	} if (behind > 0) {
+	} else if (behind > 0) {
 		sprintf(tmp,"%d",behind);
 		strcat(str,tmp);
 		strcat(str,"↓ ");
