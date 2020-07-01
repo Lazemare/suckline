@@ -4,6 +4,11 @@
 #include <unistd.h>
 #include "suckline.h"
 
+#define CAT2BUF(str) strcat(prompt->buff,str)
+#define FG_NUM(num)  prompt->color_fg[num]
+#define BG_NUM(num)  prompt->color_bg[num]
+#define SHELL        prompt->shell
+
 /* Make the powerline-like segment. */
 void make_segment(struct PROMPT *prompt)
 {
@@ -24,26 +29,21 @@ void make_segment(struct PROMPT *prompt)
 	/* make segment */
 	for (i = 0; i < prompt->segnum; i++) {
 		if (strlen(prompt->string[i])) {
-			strcat(prompt->buff,
-				COLOR_FG[prompt->shell][prompt->color_fg[i]]);
-			strcat(prompt->buff,
-				COLOR_BG[prompt->shell][prompt->color_bg[i]]);
-			strcat(prompt->buff,prompt->string[i]);
-			strcat(prompt->buff,RESET[prompt->shell]);
-			strcat(prompt->buff,
-				COLOR_FG[prompt->shell][prompt->color_bg[i]]);
+			CAT2BUF(COLOR_FG[SHELL][FG_NUM(i)]);
+			CAT2BUF(COLOR_BG[SHELL][BG_NUM(i)]);
+			CAT2BUF(prompt->string[i]);
+			CAT2BUF(RESET[SHELL]);
+			CAT2BUF(COLOR_FG[SHELL][BG_NUM(i)]);
 			if (i != (prompt->segnum - 1)) {
 				if (strlen(prompt->string[i+1])) {
-					strcat(prompt->buff,
-						COLOR_BG[prompt->shell][prompt->color_bg[i+1]]);
+					CAT2BUF(COLOR_BG[SHELL][BG_NUM(i+1)]);
 				} else if ((i+2) < (prompt->segnum - 1)) {
-					strcat(prompt->buff,
-						COLOR_BG[prompt->shell][prompt->color_bg[i+2]]);
+					CAT2BUF(COLOR_BG[SHELL][BG_NUM(i+2)]);
 				}
 			}
-			strcat(prompt->buff,"");
-			strcat(prompt->buff,RESET[prompt->shell]);
+			CAT2BUF("");
+			CAT2BUF(RESET[SHELL]);
 		}
 	}
-	strcat(prompt->buff," \n");
+	CAT2BUF(" \n");
 }
