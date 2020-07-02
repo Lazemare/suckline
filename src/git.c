@@ -136,11 +136,11 @@ int git(char *str)
 	if (ahead > 0) {
 		sprintf(tmp,"%d",ahead);
 		strcat(str,tmp);
-		strcat(str,"↑ ");
+		strcat(str,"⇡ ");
 	} else if (behind > 0) {
 		sprintf(tmp,"%d",behind);
 		strcat(str,tmp);
-		strcat(str,"↓ ");
+		strcat(str,"⇣ ");
 	}
 	return 0;
 }
