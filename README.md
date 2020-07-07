@@ -27,13 +27,13 @@ Then here comes suckline. Basically it's nothing but an empty shell, since suckl
 
 You could simply type `make` command in the `src` directory to compile suckline. After that, you could move the binary to somewhere you'd like to. Or you may want to use `sudo make install`.
 
-## Configure
+## Configuration
 
 Suckline does not read a configure file during running, the configure file is the header file itself. You could change things in `config.h`, then recompile suckline to make it work.
 
 ## Shell support
 
-By now suckline only support BASH and FISH.
+By now suckline only supports BASH and FISH.
 
 ### BASH
 
