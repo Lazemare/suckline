@@ -1,4 +1,5 @@
 /* This prompt sucks! */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,6 +12,7 @@ int main(int argc, char *argv[])
 {
 	/* Load configurations. */
 	struct PROMPT prompt;
+	prompt.errno = 0;
 	extern struct CONFIG config;
 	prompt.segnum = config.segment_number;
 	prompt.string = (char **) malloc(prompt.segnum*sizeof(char *));
@@ -38,11 +40,8 @@ int main(int argc, char *argv[])
 	write(1,prompt.buff,strlen(prompt.buff));
 
 	for (int i = 0; i < prompt.segnum; i++) {
-		prompt.string[i] = NULL;
 		free(prompt.string[i]);
 	}
-	prompt.string = NULL;
 	free(prompt.string);
-	prompt.buff = NULL;
 	free(prompt.buff);
 }
