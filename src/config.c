@@ -22,9 +22,9 @@ void conv_conf(struct CONFIG config, struct PROMPT *prompt)
 			break;
 		case 3:
 			if (!prompt->errno) {
-				prompt->string[i] = config.prompt_symbol;
+				strcat(prompt->string[i],config.prompt_symbol);
 			} else {
-				prompt->string[i] = config.prompt_symbol_err;
+				strcat(prompt->string[i],config.prompt_symbol_err);
 			}
 			break;
 		case 4:
