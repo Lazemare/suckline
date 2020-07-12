@@ -1,20 +1,27 @@
+/* This file is part of the suckline program.
+ * This program is free software. It comes without any warranty, to
+ * the extent permitted by applicable law. You can redistribute it
+ * and/or modify it under the terms of the Do What The Fuck You Want
+ * To Public License, Version 2, as published by Sam Hocevar. See
+ * http://www.wtfpl.net/ for more details. */
+
 /* Texts */
 
 #define BLK_IB "\\[\\e[38;5;237m\\]"
 #define RED_IB "\\[\\e[38;5;161m\\]"
 #define GRN_IB "\\[\\e[38;5;10m\\]"
-#define YEL_IB "\\[\\e[38;5;166m\\]"
+#define YEL_IB "\\[\\e[38;5;11m\\]"
 #define BLU_IB "\\[\\e[38;5;31m\\]"
-#define MAG_IB "\\[\\e[38;5;55m\\]"
+#define MAG_IB "\\[\\e[38;5;69m\\]"
 #define CYN_IB "\\[\\e[38;5;50m\\]"
 #define WHT_IB "\\[\\e[38;5;252m\\]"
 
 #define BLK_I "\e[38;5;237m"
 #define RED_I "\e[38;5;161m"
 #define GRN_I "\e[38;5;10m"
-#define YEL_I "\e[38;5;166m"
+#define YEL_I "\e[38;5;11m"
 #define BLU_I "\e[38;5;31m"
-#define MAG_I "\e[38;5;55m"
+#define MAG_I "\e[38;5;69m"
 #define CYN_I "\e[38;5;50m"
 #define WHT_I "\e[38;5;252m"
 
@@ -23,18 +30,18 @@
 #define BLKB_IB "\\[\\e[48;5;237m\\]"
 #define REDB_IB "\\[\\e[48;5;161m\\]"
 #define GRNB_IB "\\[\\e[48;5;10m\\]"
-#define YELB_IB "\\[\\e[48;5;166m\\]"
+#define YELB_IB "\\[\\e[48;5;11m\\]"
 #define BLUB_IB "\\[\\e[48;5;31m\\]"
-#define MAGB_IB "\\[\\e[48;5;55m\\]"
+#define MAGB_IB "\\[\\e[48;5;69m\\]"
 #define CYNB_IB "\\[\\e[48;5;50m\\]"
 #define WHTB_IB "\\[\\e[48;5;252m\\]"
 
 #define BLKB_I "\e[48;5;237m"
 #define REDB_I "\e[48;5;161m"
 #define GRNB_I "\e[48;5;10m"
-#define YELB_I "\e[48;5;166m"
+#define YELB_I "\e[48;5;11m"
 #define BLUB_I "\e[48;5;31m"
-#define MAGB_I "\e[48;5;55m"
+#define MAGB_I "\e[48;5;69m"
 #define CYNB_I "\e[48;5;50m"
 #define WHTB_I "\e[48;5;252m"
 
