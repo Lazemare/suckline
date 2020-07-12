@@ -1,3 +1,10 @@
+/* This file is part of the suckline program.
+ * This program is free software. It comes without any warranty, to
+ * the extent permitted by applicable law. You can redistribute it
+ * and/or modify it under the terms of the Do What The Fuck You Want
+ * To Public License, Version 2, as published by Sam Hocevar. See
+ * http://www.wtfpl.net/ for more details. */
+
 /* Configurations */
 struct CONFIG config = {
 	.segment_number      = 6,       /* number of segments */
@@ -20,7 +27,7 @@ struct CONFIG config = {
 	.color_fg[4]         = WHT,
 	.color_fg[5]         = WHT,
 
-	.color_bg[0]         = GRN,
+	.color_bg[0]         = YEL,
 	.color_bg[1]         = MAG,
 	.color_bg[2]         = BLU,
 	.color_bg[3]         = CYN,
