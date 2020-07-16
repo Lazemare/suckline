@@ -5,53 +5,67 @@
  * To Public License, Version 2, as published by Sam Hocevar. See
  * http://www.wtfpl.net/ for more details. */
 
-/* This prompt sucks! */
-
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include "suckline.h"
 #include "config.h"
-#include "color.h"
 
-int main(int argc, char *argv[])
+/* Convert configurations into coresponding strings and arrays. */
+void conv_conf(struct PROMPT *prompt)
 {
-	/* Load configurations. */
-	struct PROMPT prompt;
-	prompt.errno = 0;
-	prompt.segnum = SEGMENT_NUMBER;
-	prompt.color_fg = (int *) malloc(SEGMENT_NUMBER*sizeof(int));
-	prompt.color_bg = (int *) malloc(SEGMENT_NUMBER*sizeof(int));
-	prompt.string = (char **) malloc(prompt.segnum*sizeof(char *));
-	for (int i = 0; i < prompt.segnum; i++) {
-		prompt.string[i] = (char *) malloc(MAXLPS*sizeof(char));
-		memset(prompt.string[i], 0, MAXLPS*sizeof(char));
-	}
-	prompt.buff = (char *) malloc(SEGMENT_NUMBER*MAXLPS*sizeof(char));
-	memset(prompt.buff, 0, SEGMENT_NUMBER*MAXLPS*sizeof(char));
+	int i = 0;
+	int git_info = 0;
+	extern struct SEGMENT segment[];
 
-	if (argc > 1) {
-		if (strcmp(argv[1],"bash") == 0) {
-			prompt.shell = 0;
-		} else {
-			prompt.shell = 1;
+	for (i = 0; i < prompt->segnum; i++) {
+		/* strings */
+		switch (segment[i].segment_type) {
+		case 1:
+			get_username(prompt->string[i]);
+			break;
+		case 2:
+			my_getcwd(prompt->string[i],MAXLPS,DIRECTORY_MODE);
+			break;
+		case 3:
+			if (!prompt->errno) {
+				strcat(prompt->string[i],PROMPT_SYMBOL);
+			} else {
+				strcat(prompt->string[i],PROMPT_SYMBOL_ERROR);
+			}
+			break;
+		case 4:
+			/* only print something when errno != 0 */
+			if (prompt->errno) {
+				sprintf(prompt->string[i]," %d ",prompt->errno);
+			}
+			break;
+		case 5:
+			get_conda_path(prompt->string[i]);
+			break;
+		case 6:
+			git_info = git(prompt->string[i]);
+			switch (git_info) {
+			case 1:
+				/* if not a repo, purge this segment */
+				break;
+			case 2:
+				/* git dir, give a warning */
+				segment[i].color_bg = REPO_DIRTY_BG;
+				break;
+			case 3:
+				/* repo dirty */
+				segment[i].color_bg = REPO_DIRTY_BG;
+				break;
+			}
+			break;
+		default:
+			memset(prompt->string[i], 0, MAXLPS);
 		}
-	} else {
-		prompt.shell = 1;
+		/* colors */
+		prompt->color_fg[i] = segment[i].color_fg;
+		prompt->color_bg[i] = segment[i].color_bg;
 	}
-	if (argc > 2) {
-		prompt.errno = atoi(argv[2]);
-	}
-	conv_conf(&prompt);
-	make_segment(&prompt);
-	write(1,prompt.buff,strlen(prompt.buff));
-
-	for (int i = 0; i < prompt.segnum; i++) {
-		free(prompt.string[i]);
-	}
-	free(prompt.color_fg);
-	free(prompt.color_bg);
-	free(prompt.string);
-	free(prompt.buff);
 }
