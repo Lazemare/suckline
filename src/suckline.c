@@ -21,15 +21,13 @@ int main(int argc, char *argv[])
 	struct PROMPT prompt;
 	prompt.errno = 0;
 	prompt.segnum = SEGMENT_NUMBER;
-	prompt.color_fg = (int *) malloc(SEGMENT_NUMBER*sizeof(int));
-	prompt.color_bg = (int *) malloc(SEGMENT_NUMBER*sizeof(int));
-	prompt.string = (char **) malloc(prompt.segnum*sizeof(char *));
-	for (int i = 0; i < prompt.segnum; i++) {
-		prompt.string[i] = (char *) malloc(MAXLPS*sizeof(char));
-		memset(prompt.string[i], 0, MAXLPS*sizeof(char));
+	prompt.color_fg = (int *) calloc(SEGMENT_NUMBER,sizeof(int));
+	prompt.color_bg = (int *) calloc(SEGMENT_NUMBER,sizeof(int));
+	prompt.string = (char **) calloc(SEGMENT_NUMBER,sizeof(char *));
+	for (int i = 0; i < SEGMENT_NUMBER; i++) {
+		prompt.string[i] = (char *) calloc(MAXLPS,sizeof(char));
 	}
-	prompt.buff = (char *) malloc(SEGMENT_NUMBER*MAXLPS*sizeof(char));
-	memset(prompt.buff, 0, SEGMENT_NUMBER*MAXLPS*sizeof(char));
+	prompt.buff = (char *) calloc(SEGMENT_NUMBER*MAXLPS,sizeof(char));
 
 	if (argc > 1) {
 		if (strcmp(argv[1],"bash") == 0) {
