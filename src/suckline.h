@@ -59,11 +59,11 @@ struct PROMPT {
 
 /* functions */
 
-void my_getcwd(char *buff, int len, int mode);
+void make_segment(struct PROMPT *prompt);
 
 void conv_conf(struct PROMPT *prompt);
 
-void make_segment(struct PROMPT *prompt);
+void get_cwd(char *buff, int mode);
 
 void get_conda_path(char *buff);
 
