@@ -1,3 +1,10 @@
+/* This file is part of the suckline program.
+ * This program is free software. It comes without any warranty, to
+ * the extent permitted by applicable law. You can redistribute it
+ * and/or modify it under the terms of the Do What The Fuck You Want
+ * To Public License, Version 2, as published by Sam Hocevar. See
+ * http://www.wtfpl.net/ for more details. */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,7 +18,7 @@ inline static void my_strcpy(char *str1, char *str2,
 	int i;
 
 	for (i = 0; i < len; i++) {
-		str1[pos1 + i] =  str2[pos2 + i];
+		str1[pos1 + i] = str2[pos2 + i];
 	}
 }
 
@@ -42,7 +49,7 @@ static int strip_home(char *str)
 	if (home == NULL) {
 		return -1; /* homeless */
 	}
-	len_str = strlen(str);
+	len_str  = strlen(str);
 	len_home = strlen(home);
 	if (len_home == strlen(str)) {
 		if_home = 1;
@@ -63,9 +70,10 @@ static int strip_home(char *str)
 
 /* Same as getcwd, but could only print the first letter
  * of cwd. */
-void my_getcwd(char *buff, int len, int mode)
+static void my_getcwd(char *buff, int len, int mode)
 {
-	/* mode :
+	/*
+	 * mode :
 	 * 0 for printing full name of directory,
 	 * 1 for printing first letter of directory names,
 	 * 2 for only printing name of last directory.
@@ -80,10 +88,8 @@ void my_getcwd(char *buff, int len, int mode)
 	int last = 0;
 	int count = 0;
 	char buff_local[len];
-	memset(buff_local, 0 , len);
+	memset(buff_local, 0, len);
 
-	strcat(buff," ");
-	count++;
 	getcwd(buff_local,len);
 	home = strip_home(buff_local);
 	switch (mode) {
@@ -95,7 +101,7 @@ void my_getcwd(char *buff, int len, int mode)
 			buff[count] = '~';
 			count++;
 		}
-		if (home) {
+		if (home == 1) {
 			break;
 		}
 		for (i = 0; i < len; i++) {
@@ -118,7 +124,7 @@ void my_getcwd(char *buff, int len, int mode)
 		my_strcpy(buff,buff_local,count,last,len-last);
 		break;
 	case 2:
-		if (home) {
+		if (home == 1) {
 			buff[count] = '~';
 		} else {
 			for (i = 0; i < len; i++) {
@@ -131,6 +137,22 @@ void my_getcwd(char *buff, int len, int mode)
 		}
 		break;
 	}
+}
+
+/* Get current path. The output string contains path and
+ * permission statement. */
+void get_cwd(char *buff, int mode)
+{
+	char buff_local[MAXLPS];
+	memset(buff_local, 0, MAXLPS);
+
+	strcat(buff," ");
+	/* Get path. */
+	my_getcwd(buff_local, MAXLPS, mode);
+	strcat(buff, buff_local);
+	/* Check if we have write permission here. */
+	if (access(".",W_OK))
+		strcat(buff," ");
 	strcat(buff," ");
 }
 
@@ -138,6 +160,7 @@ void my_getcwd(char *buff, int len, int mode)
 void get_conda_path(char *buff)
 {
 	const char *conda_path;
+
 	conda_path = getenv("CONDA_DEFAULT_ENV");
 	if (conda_path != NULL) {
 		strcat(buff," ");
