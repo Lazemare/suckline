@@ -27,7 +27,7 @@ void conv_conf(struct PROMPT *prompt)
 			get_username(prompt->string[i]);
 			break;
 		case 2:
-			my_getcwd(prompt->string[i],MAXLPS,DIRECTORY_MODE);
+			get_cwd(prompt->string[i],DIRECTORY_MODE);
 			break;
 		case 3:
 			if (!prompt->errno) {
