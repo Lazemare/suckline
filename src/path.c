@@ -11,29 +11,15 @@
 #include <unistd.h>
 #include "suckline.h"
 
-/* Copy len chars from str2[pos2] to str1[pos1] */
-inline static void my_strcpy(char *str1, char *str2,
-	int pos1, int pos2, int len)
-{
-	int i;
-
-	for (i = 0; i < len; i++) {
-		str1[pos1 + i] = str2[pos2 + i];
-	}
-}
-
 /* Check if two chars are parts of a Chinese word. */
-inline static int is_zh_ch(char p, char p1)
-{
-	int is_zh_ch = 0;
+#define IS_ZH_CN(p, p1) ((p & 0x80 && p1 & 0x80) > 0)
 
-	if (p & 0x80 && p1 & 0x80) {
-		is_zh_ch = 1;
-	} else {
-		is_zh_ch = 0;
-	}
-	return is_zh_ch;
-}
+/* Copy len chars from str2[pos2] to str1[pos1] */
+#define STRCPY(str1, str2, pos1, pos2, len) do { \
+	for (int pppp = 0; pppp < len; pppp++) { \
+		str1[pos1 + pppp] = str2[pos2 + pppp]; \
+	} \
+} while (0)
 
 /* substitute home directory with a `~' */
 static int strip_home(char *str)
@@ -106,22 +92,22 @@ static void my_getcwd(char *buff, int len, int mode)
 		}
 		for (i = 0; i < len; i++) {
 			if (buff_local[i] == '/') {
-				if (is_zh_ch(buff_local[i+1], buff_local[i+2])) {
-					my_strcpy(buff,buff_local,count,i,4);
+				if (IS_ZH_CN(buff_local[i+1], buff_local[i+2])) {
+					STRCPY(buff,buff_local,count,i,4);
 					count += 4;
 				} else {
-					my_strcpy(buff,buff_local,count,i,2);
+					STRCPY(buff,buff_local,count,i,2);
 					count += 2;
 				}
 				last = i;
 			}
 		}
-		if (is_zh_ch(buff[count-1],buff[count-2])) {
+		if (IS_ZH_CN(buff[count-1],buff[count-2])) {
 			last += 4;
 		} else {
 			last += 2;
 		}
-		my_strcpy(buff,buff_local,count,last,len-last);
+		STRCPY(buff,buff_local,count,last,len-last);
 		break;
 	case 2:
 		if (home == 1) {
@@ -133,7 +119,7 @@ static void my_getcwd(char *buff, int len, int mode)
 				}
 			}
 			last++;
-			my_strcpy(buff,buff_local,count,last,len-last);
+			STRCPY(buff,buff_local,count,last,len-last);
 		}
 		break;
 	}
