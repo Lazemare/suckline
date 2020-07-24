@@ -49,14 +49,13 @@ static int get_git_branch(char *str)
 /* Check if cwd is git dir */
 static int is_git_dir(void)
 {
-	int is_git_dir = 0;
 	char buff[MAXLPS];
 
 	getcwd(buff,MAXLPS);
-	if (strstr(buff,"/.git")) {
-		is_git_dir = 1;
-	}
-	return is_git_dir;
+	if (strstr(buff,"/.git"))
+		return 1;
+	else
+		return 0;
 }
 
 /* Get git repo information. */
