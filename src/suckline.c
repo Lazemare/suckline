@@ -52,4 +52,5 @@ int main(int argc, char *argv[])
 	free(prompt.color_bg);
 	free(prompt.string);
 	free(prompt.buff);
+	return 0;
 }
