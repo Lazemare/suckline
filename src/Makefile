@@ -19,18 +19,8 @@ EXE     = suckline
 .PHONY : all
 all: suckline
 
-config.o:
-	$(CC) $(INCS) $(CFLAGS) -c config.c
-git.o:
-	$(CC) $(INCS) $(CFLAGS) -c git.c
-path.o:
-	$(CC) $(INCS) $(CFLAGS) -c path.c
-segment.o:
-	$(CC) $(INCS) $(CFLAGS) -c segment.c
-suckline.o:
-	$(CC) $(INCS) $(CFLAGS) -c suckline.c
-user.o:
-	$(CC) $(INCS) $(CFLAGS) -c user.c
+$(OBJS): %.o: %.c
+	$(CC) $(INCS) $(CFLAGS) -c $<
 
 suckline: $(OBJS)
 	$(CC) -o $(EXE) $(OBJS) $(LDFLAGS)
