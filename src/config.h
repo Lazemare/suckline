@@ -15,6 +15,9 @@
  * Colors:
  * BLK, RED, GRN, CYN,
  * YEL, BLU, MAG, WHT
+ *
+ * Directory mode:
+ * FIRST, FULL, LAST
  */
 
 #define SEGMENT_NUMBER      6
