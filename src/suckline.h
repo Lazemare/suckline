@@ -70,3 +70,7 @@ void get_conda_path(char *buff);
 void get_username(char *str);
 
 int git(char *str);
+
+/* lengths */
+
+static const size_t len_utf_8 = strlen("");
