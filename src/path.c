@@ -16,47 +16,66 @@
 
 /* Copy len chars from str2[pos2] to str1[pos1] */
 #define STRCPY(str1, str2, pos1, pos2, len) do { \
-	for (int pppp = 0; pppp < len; pppp++) { \
-		str1[pos1 + pppp] = str2[pos2 + pppp]; \
-	} \
+	for (int pppp = 0; pppp < len; pppp++) {     \
+		str1[pos1 + pppp] = str2[pos2 + pppp];   \
+	}                                            \
 } while (0)
 
-/* substitute home directory with a `~' */
-static int strip_home(char *str)
-{
-	int i = 0;
-	int if_home = 0;
-	int len_str = 0;
-	int len_home = 0;
-	const char *home;
 
-	/* determine if we are at home */
-	home = getenv("HOME");
-	if (home == NULL) {
-		return -1; /* homeless */
-	}
-	len_str  = strlen(str);
+/* Copy len chars from str2[pos2] to str1[pos1] */
+#define STRRCPY(str1, str2, pos1, pos2, len) do {          \
+	for (int pppp = 0; pppp < len; pppp++) {               \
+		str1[pos1 + len - pppp] = str2[pos2 + len - pppp]; \
+	}                                                      \
+} while (0)
+
+/* Determine if we are at home or under home dir. */
+static int is_at_home(char *pwd, const char *home)
+{
+	int len_pwd = 0;
+	int len_home = 0;
+
+	len_pwd  = strlen(pwd);
 	len_home = strlen(home);
-	if (len_home == strlen(str)) {
-		if_home = 1;
+	if (home == NULL)
+		return -1; /* homeless, wtf */
+	if (strncmp(pwd, home,len_home) == 0) {
+		if (len_home == len_pwd)
+			return 2; /* at home dir */
+		else
+			return 1; /* at somewhere under home dir */
+	} else if (strlen(pwd) == 1) {
+		return 3; /* at / */
+	} else {
+		return 0; /* not at home */
 	}
-	/* strip */
-	if (strncmp(str,home,len_home) == 0) {
-		str[0] = '~';
-		for (i = 1; i < len_home; i++) {
-			str[i] = '\0';
-		}
-		for (i = len_home; i < len_str; i++) {
-			str[i - len_home + 1] = str[i];
-			str[i] = '\0';
-		}
-	}
-	return if_home;
 }
 
-/* Same as getcwd, but could only print the first letter
- * of cwd. */
-static void my_getcwd(char *buff, int len, int mode)
+/* substitute home directory with a `' */
+static void strip_home(char *pwd, const char *home, int is_at_home)
+{
+	int len_pwd = 0;
+	int len_home = 0;
+
+	len_pwd  = strlen(pwd);
+	len_home = strlen(home);
+	if (is_at_home == 2) {
+		memset(pwd, 0, len_pwd);
+		strcpy(pwd, "");
+	} else if (is_at_home == 1) {
+		memset(pwd, 0, len_home);
+		STRCPY(pwd, "", 0, 0, len_utf_8);
+		STRCPY(pwd, pwd, len_utf_8, len_home, (len_pwd - len_home));
+		memset((pwd + len_utf_8 + len_pwd - len_home), \
+			0, (len_home - len_utf_8));
+	} else {
+		STRRCPY(pwd, pwd, len_utf_8, 0, len_pwd);
+		STRCPY(pwd, "", 0, 0, len_utf_8);
+	}
+}
+
+/* format path string */
+static void format_path(char *pwd, int mode)
 {
 	/*
 	 * mode :
@@ -64,69 +83,68 @@ static void my_getcwd(char *buff, int len, int mode)
 	 * 1 for printing first letter of directory names,
 	 * 2 for only printing name of last directory.
 	 * e.g.
-	 * 0: ~/aaa/bbb/ccc/ddd
-	 * 1: ~/a/b/c/d
-	 * 2: ddd
+	 * 0: ~  aaa  bbb  ccc  ddd
+	 * 1: ~  a  b  c  ddd
+	 * 2: ~  ddd
 	 */
 
-	int i = 0;
-	int home = 0;
-	int last = 0;
-	int count = 0;
-	char buff_local[len];
-	memset(buff_local, 0, len);
+	int len_seg = 0;
+	int len_pwd = 0;
+	char *buff = NULL;
+	char *pos = NULL;
+	char *pos_old = NULL;
 
-	getcwd(buff_local,len);
-	home = strip_home(buff_local);
-	switch (mode) {
-	case 0:
-		strcat(buff,buff_local);
-		break;
-	case 1:
-		if (buff_local[0] == '~') {
-			buff[count] = '~';
-			count++;
-		}
-		if (home == 1) {
+	len_pwd = strlen(pwd);
+	buff = calloc(len_pwd + 1, 1);
+	strcpy(buff, pwd);
+	memset(pwd, 0, len_pwd);
+	strncpy(pwd, buff, len_utf_8);
+	pos_old = buff + len_utf_8;
+
+	do {
+		pos = strchr(pos_old + 1, '/');
+		len_seg = pos - pos_old -1;
+		if (len_seg <= 0 || pos == NULL) {
 			break;
-		}
-		for (i = 0; i < len; i++) {
-			if (buff_local[i] == '/') {
-				if (IS_ZH_CN(buff_local[i+1], buff_local[i+2])) {
-					STRCPY(buff,buff_local,count,i,4);
-					count += 4;
-				} else {
-					STRCPY(buff,buff_local,count,i,2);
-					count += 2;
-				}
-				last = i;
+		} else {
+			if (mode == 0) {
+				strcat(pwd, "  ");
+				strncat(pwd, pos_old + 1, len_seg);
+			} else if (mode == 1) {
+				strcat(pwd, "  ");
+				if (IS_ZH_CN(*(pos + 1), *(pos + 2)))
+					strncat(pwd, pos_old + 1, 4);
+				else
+					strncat(pwd, pos_old + 1, 1);
 			}
 		}
-		if (IS_ZH_CN(buff[count-1],buff[count-2])) {
-			last += 4;
-		} else {
-			last += 2;
-		}
-		STRCPY(buff,buff_local,count,last,len-last);
-		break;
-	case 2:
-		if (home == 1) {
-			buff[count] = '~';
-		} else {
-			for (i = 0; i < len; i++) {
-				if (buff_local[i] == '/') {
-					last = i;
-				}
-			}
-			last++;
-			STRCPY(buff,buff_local,count,last,len-last);
-		}
-		break;
-	}
+		pos_old = pos;
+	} while (1);
+	strcat(pwd, "  ");
+	strncat(pwd, pos_old + 1, (buff + len_pwd - pos_old));
+	free(buff);
 }
 
-/* Get current path. The output string contains path and
- * permission statement. */
+/*
+ * Same as getcwd, but could only print the first letter of cwd.
+ */
+static void my_getcwd(char *pwd, int len, int mode)
+{
+	int is_at_home_ = 0;
+	const char *home = NULL;
+
+	getcwd(pwd, len);
+	home = getenv("HOME");
+	is_at_home_ = is_at_home(pwd, home);
+	strip_home(pwd, home, is_at_home_);
+	if (is_at_home_ != 2 && is_at_home_ != 3)
+		format_path(pwd, mode);
+}
+
+/*
+ * Get current path. The output string contains path and
+ * permission statement.
+ */
 void get_cwd(char *buff, int mode)
 {
 	char buff_local[MAXLPS];
